@@ -1,0 +1,18 @@
+Basic RC circuit
+*
+* Dave Desrochers
+*
+
+vin 1 0 pulse(10.0V 0.0V 5s 10ms 10ms 12s) ac 1.0 dc 0.0
+r1 1 2 1.001
+c1 2 0 2.5
+r2 2 0 20.0
+
+.control
+delete all
+tran 10.0ms 25s 0.0ms 0.1s
+plot v(1) v(2)
+.endc
+
+.end
+
