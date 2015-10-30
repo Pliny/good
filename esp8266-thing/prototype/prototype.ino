@@ -26,7 +26,20 @@ void loop() {
     /* Post the number of pulses (proportional to flow rate) */
   }
   busyWait(1000);
+  netLog("Testing.");
   ++totalSec;
+}
+
+WiFiClient logClient;
+void netLog(String str)
+{
+  if(!logClient.connected()) {
+    logClient.connect("192.168.1.250", 9393);
+  }
+
+  if(logClient.connected()) {
+    logClient.println(str);
+  }
 }
 
 void initHardware(void)
