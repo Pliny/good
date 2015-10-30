@@ -7,8 +7,10 @@
 #define WiFiPSK   "Let me in jambony1"
 
 #define HTTP_PORT 80
-
 #define SERVER_DOMAIN "www.davesdesrochers.com"
+
+#define LOGGING_DOMAIN "192.168.1.250"
+#define LOGGING_PORT   9393
 
 #define ASSERT(_timeMs_) while(true) busyWait(_timeMs_);
 
@@ -34,7 +36,7 @@ WiFiClient logClient;
 void netLog(String str)
 {
   if(!logClient.connected()) {
-    logClient.connect("192.168.1.250", 9393);
+    logClient.connect(LOGGING_DOMAIN, LOGGING_PORT);
   }
 
   if(logClient.connected()) {
