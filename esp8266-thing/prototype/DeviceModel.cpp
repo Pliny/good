@@ -79,13 +79,9 @@ int DeviceModel::processJson(String &json)
 
 String DeviceModel::getMacAddr(void)
 {
-  static String macId = (String)0;
+  String macId = (String)0;
   int i;
   uint8_t buf[WL_MAC_ADDR_LENGTH];
-
-  if(macId) {
-    return macId;
-  }
 
   WiFi.macAddress(buf);
 
