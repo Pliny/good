@@ -12,18 +12,21 @@ void Model::GET(String &line, const char *path, const char *params)
 
 void Model::CREATE(String &line, const char *path, const char *macId)
 {
-  String params = "{ \"device_id\" : " + String(macId) + "}";
+  String params = "{ \"device_id\" : \"" + String(macId) + "\" }";
   fetchObject("POST", line, path, params.c_str());
 }
 
 void Model::fetchObject(const char *fetchType, String &line, const char *path, const char *params)
 {
+
+  String ftype = String(fetchType);
+  
   if (!client.connect(Utils::SERVER_DOMAIN, Utils::API_PORT)) {
     Utils::ASSERT(1000);
   }
 
-  String request = String(fetchType) + " /" + String(path);
-  if(fetchType == "GET" && String(params).length() != 0) {
+  String request = ftype + " /" + String(path);
+  if(ftype == "GET" && String(params).length() != 0) {
     request += "/?" + String(params);
   }
   request += " HTTP/1.1";
@@ -32,9 +35,15 @@ void Model::fetchObject(const char *fetchType, String &line, const char *path, c
   client.println(String("Host: ") + String(Utils::API_SERVER));
   client.println("User-Agent: good/0.0");
   client.println("Accept: */*");
-  client.println();
 
-  if(fetchType == "POST" || fetchType == "PUT") {
+  if(ftype == "POST" || ftype == "PUT") {
+    client.println(String("Content-Length: ") + String(String(params).length()));
+    client.println("Content-Type: application/json");
+  }
+
+  client.println();
+  
+  if(ftype == "POST" || ftype == "PUT") {
     client.println(params);
   }
 
@@ -48,14 +57,22 @@ void Model::fetchObject(const char *fetchType, String &line, const char *path, c
 
 int Model::getStatusCode(String &retData)
 {
-  return retData.substring(retData.indexOf(' ', 1)+1, 3).toInt();
+  int subBeg = retData.indexOf(' ', 1)+1;
+  int subEnd = subBeg + 3;
+
+  return retData.substring(subBeg, subEnd).toInt();
 }
 
 int Model::processHttpResult(String &result)
 {
   while(!result.startsWith("\r\n")) {
-    result.remove(0, (result[result.indexOf('\n')]));
+    Utils::netLog("---" + String(result[0]) + "-" + String(result[1]) + "-" + String(result[2]) + "-" + result);
+    Utils::busyWait(100);
+    result.remove(0, (result[result.indexOf('\r')]));
   }
+  Utils::netLog("Processing JSON: " + result);
+  Utils::busyWait(100);
+
   return processJson(result);
 }
 

@@ -23,12 +23,12 @@ void setup()
 
 void loop()
 {
-  //if(totalSec % myself.getTimeInterval() == 0) {
+  if(totalSec % myself.getTimeInterval() == 0) {
     /* Post the number of pulses (proportional to flow rate) */
     /* if(!sampleData->send(pulseCount)) { */
     /*   Utils::netLog("ERROR: Failed to post '" + pulseCount + "'. continuing"); */
     /* } */
-  //}
+  }
   Utils::busyWait(1000);
   ++totalSec;
 }

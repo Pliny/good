@@ -11,10 +11,10 @@ namespace Utils
   const char* WiFiPSK  = "Let me in jambony1";
 
   const uint16_t API_PORT = 3000;
-  const char* SERVER_DOMAIN = "192.168.1.14";
-  const char* API_SERVER = "192.168.1.14" ":3000";
+  const char* SERVER_DOMAIN = "192.168.1.13";
+  const char* API_SERVER = "192.168.1.13" ":3000";
 
-  const char* LOGGING_DOMAIN  = "192.168.1.14";
+  const char* LOGGING_DOMAIN  = "192.168.1.13";
   const uint16_t LOGGING_PORT =   9393;
 
   void busyWait(unsigned int timeMs)

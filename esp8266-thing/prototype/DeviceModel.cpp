@@ -23,10 +23,9 @@ int DeviceModel::populate(void)
   GET(result, line.c_str(), "");
 
   httpStatusCode = getStatusCode(result);
-
+  
   if(httpStatusCode == 200) {
     processHttpResult(result);
-    processJson(result);
   }
 
   return httpStatusCode == 200;
@@ -39,17 +38,16 @@ int DeviceModel::createAndPopulate(void)
 
   String params = "api/v1/devices";
   String macId  = getMacAddr();
-  
+
   CREATE(result, params.c_str(), macId.c_str());
 
   httpStatusCode = getStatusCode(result);
 
   if(httpStatusCode == 201) {
     processHttpResult(result);
-    processJson(result);
   }
 
-  return getStatusCode(result) == 200;
+  return httpStatusCode == 201;
 }
 
 /*
@@ -73,6 +71,8 @@ int DeviceModel::processJson(String &json)
   }
 
   timeInterval = root["sample_interval"];
+
+  Utils::netLog(String(timeInterval));
 
   return 1;
 }
