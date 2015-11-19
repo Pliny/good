@@ -3,9 +3,9 @@
 #include "utils.h"
 #include "DeviceModel.h"
 
-static unsigned int totalSec = 0;
+static unsigned int lastEvent = 0;
 static unsigned int pulseCount = 0;
-  
+
 DeviceModel myself;
 
 void setup()
@@ -19,18 +19,22 @@ void setup()
       Utils::ASSERT(2000); /* Fail */
     }
   }
+  Utils::netLog("Updating every " + String(myself.getTimeInterval()) + " mS.");
 }
 
 void loop()
 {
-  if(totalSec % myself.getTimeInterval() == 0) {
+  uint32_t currTime = millis();
+
+  if(currTime >= myself.getTimeInterval() + lastEvent) {
+    Utils::netLog("[" + String(currTime) + "]: Updating Server");
+    lastEvent = currTime;
     /* Post the number of pulses (proportional to flow rate) */
     /* if(!sampleData->send(pulseCount)) { */
     /*   Utils::netLog("ERROR: Failed to post '" + pulseCount + "'. continuing"); */
     /* } */
   }
   Utils::busyWait(1000);
-  ++totalSec;
 }
 
 void initHardware(void)

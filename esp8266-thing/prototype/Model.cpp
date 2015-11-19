@@ -20,7 +20,7 @@ void Model::fetchObject(const char *fetchType, String &line, const char *path, c
 {
 
   String ftype = String(fetchType);
-  
+
   if (!client.connect(Utils::SERVER_DOMAIN, Utils::API_PORT)) {
     Utils::ASSERT(1000);
   }
@@ -42,7 +42,7 @@ void Model::fetchObject(const char *fetchType, String &line, const char *path, c
   }
 
   client.println();
-  
+
   if(ftype == "POST" || ftype == "PUT") {
     client.println(params);
   }
@@ -66,12 +66,9 @@ int Model::getStatusCode(String &retData)
 int Model::processHttpResult(String &result)
 {
   while(!result.startsWith("\r\n")) {
-    Utils::netLog("---" + String(result[0]) + "-" + String(result[1]) + "-" + String(result[2]) + "-" + result);
-    Utils::busyWait(100);
-    result.remove(0, (result[result.indexOf('\r')]));
+    result.remove(0, result.indexOf('\n')+1);
   }
-  Utils::netLog("Processing JSON: " + result);
-  Utils::busyWait(100);
+  result.remove(0, result.indexOf('\n')+1);
 
   return processJson(result);
 }

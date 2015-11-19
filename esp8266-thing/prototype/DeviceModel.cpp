@@ -23,7 +23,7 @@ int DeviceModel::populate(void)
   GET(result, line.c_str(), "");
 
   httpStatusCode = getStatusCode(result);
-  
+
   if(httpStatusCode == 200) {
     processHttpResult(result);
   }
@@ -63,16 +63,15 @@ int DeviceModel::processJson(String &json)
 {
   StaticJsonBuffer<256> jsonBuffer;
 
-  JsonObject& root = jsonBuffer.parseObject(json);
+  JsonObject& root = jsonBuffer.parseObject(json.c_str());
 
   if(!root.success()) {
-    Utils::netLog(String("processJson") + String(": Bad json."));
+    Utils::netLog(String(__FUNCTION__) + String(": Bad json."));
     return 0;
   }
 
-  timeInterval = root["sample_interval"];
-
-  Utils::netLog(String(timeInterval));
+  /* Server has the time units in seconds, we have it in milli-seconds */
+  timeInterval = root["sample_interval"].as<int>() * 1000;
 
   return 1;
 }
