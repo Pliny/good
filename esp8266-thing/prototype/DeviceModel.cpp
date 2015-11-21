@@ -36,10 +36,10 @@ int DeviceModel::createAndPopulate(void)
   String result = "";
   int httpStatusCode;
 
-  String params = "api/v1/devices";
-  String macId  = getMacAddr();
+  String path = "api/v1/devices";
+  String params = "{ \"device_id\" : \"" + getMacAddr() + "\" }";
 
-  CREATE(result, params.c_str(), macId.c_str());
+  CREATE(result, path.c_str(), params.c_str());
 
   httpStatusCode = getStatusCode(result);
 
@@ -72,6 +72,7 @@ int DeviceModel::processJson(String &json)
 
   /* Server has the time units in seconds, we have it in milli-seconds */
   timeInterval = root["sample_interval"].as<int>() * 1000;
+  id = root["id"];
 
   return 1;
 }
@@ -93,4 +94,8 @@ String DeviceModel::getMacAddr(void)
   return macId;
 }
 
+int DeviceModel::getId(void)
+{
+  return id;
+}
 

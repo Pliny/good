@@ -2,11 +2,13 @@
 #include <ESP8266WiFi.h>
 #include "utils.h"
 #include "DeviceModel.h"
+#include "SampleDataModel.h"
 
 static unsigned int lastEvent = 0;
 static unsigned int pulseCount = 0;
 
 DeviceModel myself;
+SampleDataModel sampleData(myself);
 
 void setup()
 {
@@ -28,11 +30,11 @@ void loop()
 
   if(currTime >= myself.getTimeInterval() + lastEvent) {
     Utils::netLog("[" + String(currTime) + "]: Updating Server");
+
+    if(!sampleData.send(pulseCount)) {
+      Utils::netLog("ERROR: Failed to post '" + String(pulseCount) + "'. continuing");
+    }
     lastEvent = currTime;
-    /* Post the number of pulses (proportional to flow rate) */
-    /* if(!sampleData->send(pulseCount)) { */
-    /*   Utils::netLog("ERROR: Failed to post '" + pulseCount + "'. continuing"); */
-    /* } */
   }
   Utils::busyWait(1000);
 }

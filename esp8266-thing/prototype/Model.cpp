@@ -10,10 +10,9 @@ void Model::GET(String &line, const char *path, const char *params)
   fetchObject("GET", line, path, params);
 }
 
-void Model::CREATE(String &line, const char *path, const char *macId)
+void Model::CREATE(String &line, const char *path, const char *params)
 {
-  String params = "{ \"device_id\" : \"" + String(macId) + "\" }";
-  fetchObject("POST", line, path, params.c_str());
+  fetchObject("POST", line, path, params);
 }
 
 void Model::fetchObject(const char *fetchType, String &line, const char *path, const char *params)

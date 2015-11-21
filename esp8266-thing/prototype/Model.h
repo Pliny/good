@@ -9,16 +9,12 @@ class Model {
 public:
   Model(void);
 
-  virtual int populate(void) = 0;
-
-  virtual int createAndPopulate(void) = 0;
-
 protected:
   WiFiClient client;
 
   void GET(String &line, const char *path, const char *params);
 
-  void CREATE(String &line, const char *path, const char *macId);
+  void CREATE(String &line, const char *path, const char *params);
 
   virtual int processJson(String &json) = 0;
 

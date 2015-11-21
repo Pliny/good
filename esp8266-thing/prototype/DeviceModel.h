@@ -12,18 +12,19 @@ public:
   int getTimeInterval(void);
 
   int populate(void);
-  
+
   int createAndPopulate(void);
 
-protected:
+  String getMacAddr(void);
+
+  int getId(void);
 
 private:
   int timeInterval;
 
-  String getMacAddr(void);
+  int id;
 
   int processJson(String &json);
-
 };
 
 #endif
