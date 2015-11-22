@@ -42,8 +42,15 @@ void loop()
 void initHardware(void)
 {
   pinMode(Utils::DIGITAL_PIN, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(Utils::DIGITAL_PIN), updateRate, RISING);
+
   pinMode(Utils::LED_PIN, OUTPUT);
   digitalWrite(Utils::LED_PIN, LOW);
+}
+
+void updateRate(void)
+{
+  pulseCount++;
 }
 
 void connectWiFi(void)
