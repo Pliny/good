@@ -10,6 +10,7 @@ namespace Utils
 
   extern const uint8_t LED_PIN;
   extern const uint8_t DIGITAL_PIN;
+  extern const uint8_t TEST_PIN;
 
   extern const char* WiFiSSID;
   extern const char* WiFiPSK;

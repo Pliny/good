@@ -36,16 +36,29 @@ void loop()
     }
     lastEvent = currTime;
   }
+
+#ifdef DEBUG
+  digitalWrite(Utils::TEST_PIN, HIGH);
+  Utils::busyWait(100);
+  digitalWrite(Utils::TEST_PIN, LOW);
+  Utils::busyWait(100);
+#else
   Utils::busyWait(1000);
+#endif
 }
 
 void initHardware(void)
 {
-  pinMode(Utils::DIGITAL_PIN, INPUT_PULLUP);
+  pinMode(Utils::DIGITAL_PIN, INPUT);
   attachInterrupt(digitalPinToInterrupt(Utils::DIGITAL_PIN), updateRate, RISING);
+
+#ifdef DEBUG
+  pinMode(Utils::TEST_PIN, OUTPUT);
+  digitalWrite(Utils::LED_PIN, LOW);
 
   pinMode(Utils::LED_PIN, OUTPUT);
   digitalWrite(Utils::LED_PIN, LOW);
+#endif
 }
 
 void updateRate(void)
