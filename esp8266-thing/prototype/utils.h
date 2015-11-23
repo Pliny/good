@@ -1,6 +1,8 @@
 #ifndef _UTILS_H
 #define _UTILS_H
 
+#define DEBUG
+
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 
